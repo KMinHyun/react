@@ -1,4 +1,6 @@
 import './ProductList.css';
+import ProductDetail from './ProductDetail.jsx';
+import { useState } from 'react';
 
 function ProductList() {
   const products = [
@@ -25,14 +27,24 @@ function ProductList() {
     }
   ];
 
+  const [modalFlag, setModalFlag] = useState(false);
+
+  const [propsProduct, setPropsProduct] = useState({});
+
+  const viewModal = (item) => {
+    setPropsProduct({...item});
+    setModalFlag(true);
+  }
 
   return (
     <>
+      {modalFlag && <ProductDetail product={propsProduct} setModalFlag={setModalFlag}></ProductDetail>}
+      {/* product란 속성명으로 자식 쪽에 전달이 되고 그 이름으로 사용할 수 있음 */}
       <div className="card-container">
         {
           products.map(item => {
             return (
-              <div className="card" key={item.id}>
+              <div className="card" key={item.id} onClick={() => {viewModal(item)}}>
                 <div className="card-img" style={{backgroundImage: `url('${item.img}')`}}></div>
                 <p className="card-title">{item.title}</p>
                 <p className="card-price">{item.price}</p>
